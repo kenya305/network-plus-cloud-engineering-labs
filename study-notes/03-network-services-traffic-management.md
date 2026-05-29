@@ -174,34 +174,74 @@ Each time a packet passes through a router, the router decreases the TTL value b
 
 When the TTL reaches 0, the packet is discarded.
 
-### Why IP TTL Exists
+---
 
-IP TTL prevents packets from looping forever on a network.
+## Real-World Packet Capture Example: IP TTL in Wireshark
 
-### Example
+In the video, Professor Messer shows an example of an IPv4 packet decode similar to what could be seen in Wireshark.
 
-A packet starts with a TTL of 64.
+The packet capture includes several layers of information:
 
-| Step | TTL Value |
-|---|---|
-| Starting TTL | 64 |
-| After Router 1 | 63 |
-| After Router 2 | 62 |
-| After Router 3 | 61 |
+| Packet Detail | Meaning | Related OSI Layer |
+|---|---|---|
+| Frame 1: 295 bytes on wire | The captured network frame size | Layer 1 / Layer 2 context |
+| Ethernet II | Ethernet frame information | Layer 2: Data Link |
+| Source MAC address | Hardware address of sending device | Layer 2: Data Link |
+| Destination MAC address | Hardware address of receiving device | Layer 2: Data Link |
+| Internet Protocol Version 4 | IPv4 packet information | Layer 3: Network |
+| Source IP address | Sending IP address | Layer 3: Network |
+| Destination IP address | Receiving IP address | Layer 3: Network |
+| Time to Live: 58 | Remaining router hops before packet is dropped | Layer 3: Network |
+| Protocol: TCP | Transport protocol being used | Layer 4: Transport |
+| Source Port: 443 | HTTPS traffic source port in this example | Layer 4: Transport |
+| Destination Port: 53012 | Temporary client-side destination port | Layer 4: Transport |
+| Transport Layer Security | Encrypted session/application data | Layers 5–7 context |
 
-When TTL reaches 0, the packet is dropped.
+### Screenshot Detail
 
-### Common Default TTL Values
+The important field highlighted in the packet capture is:
 
-| Operating System | Common Default TTL |
-|---|---|
-| macOS | 64 |
-| Linux | 64 |
-| Windows | 128 |
+```text
+Time to live: 58
+```
 
-### Exam Tip
+This means the packet has 58 router hops remaining before it would be discarded.
 
-If the question mentions a packet being dropped after too many hops, think TTL.
+Each time the packet passes through a router, the TTL value decreases by 1.
+
+Example:
+
+```text
+TTL 58 → Router processes packet → TTL 57
+TTL 57 → Next router processes packet → TTL 56
+```
+
+If the TTL reaches 0, the router drops the packet.
+
+### Why This Matters
+
+TTL helps prevent packets from looping forever across a network.
+
+If there is a routing loop, the packet may keep bouncing between routers. TTL ensures that the packet eventually expires and is removed from the network.
+
+### Cloud Engineering Connection
+
+This is important for cloud engineering because TTL and routing behavior can help troubleshoot:
+
+- Routing loops
+- Misconfigured route tables
+- VPN routing issues
+- Hybrid cloud connectivity problems
+- Packets not reaching the correct destination
+- Network paths between cloud and on-premises environments
+
+### Key Takeaway
+
+In IP networking, TTL is not a time-based countdown. It is a hop-based counter.
+
+DNS TTL is measured in seconds.
+
+IP TTL is measured in router hops.
 
 ---
 
@@ -217,7 +257,9 @@ Router B thinks the next hop is Router A.
 
 The packet keeps looping:
 
+```text
 Router A → Router B → Router A → Router B
+```
 
 This continues until the TTL reaches 0 and the packet is dropped.
 
@@ -234,10 +276,12 @@ A routing loop may show repeated routers in traceroute output.
 
 Example:
 
-10.1.10.1  
-10.2.10.2  
-10.1.10.1  
-10.2.10.2  
+```text
+10.1.10.1
+10.2.10.2
+10.1.10.1
+10.2.10.2
+```
 
 ### Cloud Engineering Connection
 
@@ -262,7 +306,9 @@ DNS TTL tells a system how long to cache a DNS record before requesting a fresh 
 
 If a DNS record has a TTL of 300, the record can be cached for 300 seconds.
 
+```text
 300 seconds = 5 minutes
+```
 
 After the TTL expires, the system must perform another DNS lookup.
 
@@ -361,3 +407,4 @@ Answer: The packet is discarded.
 ### 8. A traceroute shows traffic bouncing between the same two routers repeatedly. What is likely happening?
 
 Answer: Routing loop
+
