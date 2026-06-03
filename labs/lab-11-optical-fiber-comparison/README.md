@@ -1,4 +1,3 @@
-````markdown
 # Lab 11: Optical Fiber Comparison
 
 ## Objective
