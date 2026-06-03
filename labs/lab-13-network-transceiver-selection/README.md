@@ -1,4 +1,3 @@
-````markdown
 # Lab 13: Network Transceiver Selection
 
 ## Objective
