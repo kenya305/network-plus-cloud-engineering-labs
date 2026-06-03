@@ -1,4 +1,3 @@
-````markdown
 # Lab 10: Ethernet Standards Decoder
 
 ## Objective
