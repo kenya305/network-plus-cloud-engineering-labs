@@ -1,4 +1,3 @@
-````markdown
 # Lab 12: Copper Cabling Selection
 
 ## Objective
