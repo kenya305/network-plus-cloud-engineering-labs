@@ -138,33 +138,79 @@ PY
 
 ## Terminal Output
 
-Paste your Terminal output here:
-
 ```text
-Replace this section with your actual Terminal output.
+Input: 10.1.1.0/24
+Network: 10.1.1.0/24
+Netmask: 255.255.255.0
+Broadcast: 10.1.1.255
+Subnet bits: 16
+Host bits: 8
+Possible subnets: 65536
+Usable hosts per subnet: 254
+----------------------------------------
+Input: 192.168.11.0/26
+Network: 192.168.11.0/26
+Netmask: 255.255.255.192
+Broadcast: 192.168.11.63
+Subnet bits: 2
+Host bits: 6
+Possible subnets: 4
+Usable hosts per subnet: 62
+----------------------------------------
+Input: 172.16.55.0/21
+Network: 172.16.48.0/21
+Netmask: 255.255.248.0
+Broadcast: 172.16.55.255
+Subnet bits: 5
+Host bits: 11
+Possible subnets: 32
+Usable hosts per subnet: 2046
+----------------------------------------
 ```
 
 ---
 
 ## Verification Analysis
 
-| Input | Expected Network | Expected Subnet Bits | Expected Host Bits | Expected Subnets | Expected Usable Hosts | Status |
-| ----- | ---------------- | -------------------- | ------------------ | ---------------- | --------------------- | ------ |
-| `10.1.1.0/24` | `10.1.1.0/24` | `16` | `8` | `65,536` | `254` | Replace with your result |
-| `192.168.11.0/26` | `192.168.11.0/26` | `2` | `6` | `4` | `62` | Replace with your result |
-| `172.16.55.0/21` | `172.16.48.0/21` | `5` | `11` | `32` | `2,046` | Replace with your result |
+| Input | Actual Network | Netmask | Broadcast Address | Subnet Bits | Host Bits | Possible Subnets | Usable Hosts | Status |
+| ----- | -------------- | ------- | ----------------- | ----------- | --------- | ---------------- | ------------ | ------ |
+| `10.1.1.0/24` | `10.1.1.0/24` | `255.255.255.0` | `10.1.1.255` | `16` | `8` | `65,536` | `254` | Verified |
+| `192.168.11.0/26` | `192.168.11.0/26` | `255.255.255.192` | `192.168.11.63` | `2` | `6` | `4` | `62` | Verified |
+| `172.16.55.0/21` | `172.16.48.0/21` | `255.255.248.0` | `172.16.55.255` | `5` | `11` | `32` | `2,046` | Verified |
 
 ---
 
 ## What I Observed
 
-VLSM allows a larger IPv4 address space to be divided into smaller networks.
+The Python verification confirmed the manual VLSM calculations.
 
 The number of borrowed subnet bits determines the number of possible subnets.
 
-The number of remaining host bits determines the number of usable host addresses inside each subnet.
+The number of remaining host bits determines the number of usable hosts within each traditional IPv4 subnet.
 
-The actual subnet boundary must also be verified.
+The lab also confirmed that:
+
+```text
+172.16.55.0/21
+```
+
+belongs to:
+
+```text
+172.16.48.0/21
+```
+
+The `/21` subnet uses a netmask of:
+
+```text
+255.255.248.0
+```
+
+and a broadcast address of:
+
+```text
+172.16.55.255
+```
 
 ---
 
