@@ -1,4 +1,3 @@
-````markdown
 # Lab 08: Network Communication Types
 
 ## Objective
