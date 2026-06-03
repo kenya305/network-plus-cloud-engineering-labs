@@ -1,4 +1,3 @@
-````markdown
 # Lab 16: Network Topology Selection
 
 ## Objective
